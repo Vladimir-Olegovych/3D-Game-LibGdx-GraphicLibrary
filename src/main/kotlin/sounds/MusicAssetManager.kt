@@ -2,7 +2,7 @@ package com.gigapi.sounds
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Music
-import com.gigapi.core.effects.DisposableEffect
+import com.gigapi.effects.DisposableEffect
 
 class MusicAssetManager: DisposableEffect {
     private val musicMap = HashMap<Any, Music>()

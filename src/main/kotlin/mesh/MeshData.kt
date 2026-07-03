@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.GLTexture
 import com.badlogic.gdx.graphics.Mesh
 import com.badlogic.gdx.graphics.VertexAttribute
 import com.badlogic.gdx.graphics.VertexAttributes
-import com.gigapi.core.effects.DisposableEffect
+import com.gigapi.effects.DisposableEffect
 
 class MeshData(val mesh: Mesh? = null)
 

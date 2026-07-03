@@ -1,7 +1,7 @@
 package com.gigapi.mesh
 
 import com.badlogic.gdx.assets.AssetManager
-import com.gigapi.core.effects.DisposableEffect
+import com.gigapi.effects.DisposableEffect
 import com.gigapi.mesh.blender.BlenderConverter
 import com.gigapi.mesh.blender.BlenderParser
 import java.io.File

@@ -1,6 +1,6 @@
 package com.gigapi.sounds
 
-import com.gigapi.core.effects.DisposableEffect
+import com.gigapi.effects.DisposableEffect
 
 class MusicPlayer(
     private val musicAssetManager: MusicAssetManager

@@ -1,7 +1,7 @@
 package com.gigapi.navigation
 
 import com.badlogic.gdx.Game
-import com.gigapi.core.effects.DisposableEffect
+import com.gigapi.effects.DisposableEffect
 import com.gigapi.fragment.Fragment
 
 typealias NavComponent<D> = (D) -> Fragment
