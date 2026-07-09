@@ -16,8 +16,6 @@ dependencies {
     implementation("com.badlogicgames.gdx:gdx:1.13.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
     implementation("de.javagl:obj:0.4.0")
-    implementation("uk.co.caprica:vlcj:4.8.0")
-
     testImplementation(kotlin("test"))
 }
 

@@ -1,15 +1,27 @@
 package com.gigapi.mesh.blender
 
-import com.gigapi.mesh.RawMeshData
+import com.badlogic.gdx.graphics.VertexAttribute
+import com.badlogic.gdx.graphics.VertexAttributes
+import com.gigapi.mesh.MeshParams
 import de.javagl.obj.ObjData
 import de.javagl.obj.ObjReader
 import de.javagl.obj.ObjSplitting
 import de.javagl.obj.ObjUtils
 import java.io.File
 import java.io.FileInputStream
-import kotlin.collections.iterator
 
 class BlenderParser {
+    
+    companion object {
+        val modelMeshParams = MeshParams(
+            attributes = arrayOf(
+                VertexAttribute(VertexAttributes.Usage.Position, 3, "a_Position"),
+                VertexAttribute(VertexAttributes.Usage.Normal, 3, "a_Normal"),
+                VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, "a_TexCoord"),
+            ),
+            stride = 8
+        )
+    }
 
     fun parseObj(objFile: File, mtlFile: File? = null): BlenderModel {
         val obj = FileInputStream(objFile).use {
@@ -39,33 +51,30 @@ class BlenderParser {
             if (vertices.capacity() == 0) continue
 
             val vertexCount = vertices.capacity() / 3
-            val interleaved = FloatArray(vertexCount * RawMeshData.STRIDE)
+            val interleaved = FloatArray(vertexCount * modelMeshParams.stride)
 
             for (i in 0 until vertexCount) {
-                interleaved[i * RawMeshData.STRIDE] = vertices[i * 3]
-                interleaved[i * RawMeshData.STRIDE + 1] = vertices[i * 3 + 1]
-                interleaved[i * RawMeshData.STRIDE + 2] = vertices[i * 3 + 2]
+                interleaved[i * modelMeshParams.stride] = vertices[i * 3]
+                interleaved[i * modelMeshParams.stride + 1] = vertices[i * 3 + 1]
+                interleaved[i * modelMeshParams.stride + 2] = vertices[i * 3 + 2]
 
                 if (normals != null && normals.capacity() >= (i * 3 + 2)) {
-                    interleaved[i * RawMeshData.STRIDE + 3] = normals[i * 3]
-                    interleaved[i * RawMeshData.STRIDE + 4] = normals[i * 3 + 1]
-                    interleaved[i * RawMeshData.STRIDE + 5] = normals[i * 3 + 2]
+                    interleaved[i * modelMeshParams.stride + 3] = normals[i * 3]
+                    interleaved[i * modelMeshParams.stride + 4] = normals[i * 3 + 1]
+                    interleaved[i * modelMeshParams.stride + 5] = normals[i * 3 + 2]
                 } else {
-                    interleaved[i * RawMeshData.STRIDE + 3] = 0f
-                    interleaved[i * RawMeshData.STRIDE + 4] = 1f
-                    interleaved[i * RawMeshData.STRIDE + 5] = 0f
+                    interleaved[i * modelMeshParams.stride + 3] = 0f
+                    interleaved[i * modelMeshParams.stride + 4] = 1f
+                    interleaved[i * modelMeshParams.stride + 5] = 0f
                 }
 
                 if (texCoords != null && texCoords.capacity() >= (i * 2 + 1)) {
-                    interleaved[i * RawMeshData.STRIDE + 6] = texCoords[i * 2]
-                    interleaved[i * RawMeshData.STRIDE + 7] = 1f - texCoords[i * 2 + 1]
+                    interleaved[i * modelMeshParams.stride + 6] = texCoords[i * 2]
+                    interleaved[i * modelMeshParams.stride + 7] = 1f - texCoords[i * 2 + 1]
                 } else {
-                    interleaved[i * RawMeshData.STRIDE + 6] = 0f
-                    interleaved[i * RawMeshData.STRIDE + 7] = 0f
+                    interleaved[i * modelMeshParams.stride + 6] = 0f
+                    interleaved[i * modelMeshParams.stride + 7] = 0f
                 }
-
-                interleaved[i * RawMeshData.STRIDE + 8] = 0f
-                interleaved[i * RawMeshData.STRIDE + 9] = 1f
             }
 
             val shortIndices = ShortArray(indices.capacity())

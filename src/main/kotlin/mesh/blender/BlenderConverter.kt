@@ -29,7 +29,9 @@ object BlenderConverter {
                 texture = texture
             )
 
-            SubMeshRenderData(rawMeshData.createMeshData().mesh!!, materialRenderData)
+            SubMeshRenderData(
+                rawMeshData.createMeshData(BlenderParser.modelMeshParams).mesh!!, materialRenderData
+            )
         }
 
         return BlenderRenderData(subMeshesRenderData)
