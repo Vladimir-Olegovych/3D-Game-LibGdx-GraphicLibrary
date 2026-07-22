@@ -1,5 +1,6 @@
 package com.gigapi.mesh.blender
 
+import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.VertexAttribute
 import com.badlogic.gdx.graphics.VertexAttributes
 import com.gigapi.mesh.MeshParams
@@ -7,8 +8,6 @@ import de.javagl.obj.ObjData
 import de.javagl.obj.ObjReader
 import de.javagl.obj.ObjSplitting
 import de.javagl.obj.ObjUtils
-import java.io.File
-import java.io.FileInputStream
 
 class BlenderParser {
     
@@ -23,8 +22,8 @@ class BlenderParser {
         )
     }
 
-    fun parseObj(objFile: File, mtlFile: File? = null): BlenderModel {
-        val obj = FileInputStream(objFile).use {
+    fun parseObj(objFile: FileHandle, mtlFile: FileHandle? = null): BlenderModel {
+        val obj = objFile.read().use {
             ObjUtils.convertToRenderable(ObjReader.read(it))
         }
 
@@ -88,7 +87,7 @@ class BlenderParser {
         return BlenderModel(materials, subMeshes)
     }
 
-    private fun parseMaterials(mtlFile: File? = null): List<BlenderMaterial> {
+    private fun parseMaterials(mtlFile: FileHandle? = null): List<BlenderMaterial> {
         val blenderMaterials = mutableListOf<BlenderMaterial>().apply {
             add(BlenderMaterial("default"))
         }
@@ -96,7 +95,7 @@ class BlenderParser {
         if (mtlFile == null || !mtlFile.exists()) return blenderMaterials
 
         var currentBlenderMaterial: BlenderMaterial? = null
-        mtlFile.forEachLine { line ->
+        mtlFile.readString().lineSequence().forEach { line ->
             val trimmed = line.trim()
             when {
                 trimmed.startsWith("newmtl ") -> {

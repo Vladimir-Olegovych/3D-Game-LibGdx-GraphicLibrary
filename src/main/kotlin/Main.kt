@@ -1,10 +1,11 @@
 package com.gigapi
 
+import com.badlogic.gdx.files.FileHandle
 import com.gigapi.mesh.blender.BlenderParser
 import java.io.File
 
 fun main() {
-    val f = File("cube.obj")
+    val f = FileHandle(File("cube.obj"))
     val b = BlenderParser()
     val model = b.parseObj(f)
     println("Загружено материалов: ${model.materials.size}")

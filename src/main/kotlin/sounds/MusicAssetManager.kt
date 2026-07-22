@@ -10,7 +10,7 @@ class MusicAssetManager: DisposableEffect {
     fun get(key: Any): Music? = musicMap[key]
 
     fun load(key: Any, filePath: String) {
-        val music = Gdx.audio.newMusic(Gdx.files.local(filePath))
+        val music = Gdx.audio.newMusic(Gdx.files.internal(filePath))
         musicMap[key] = music
     }
 

@@ -1,10 +1,10 @@
 package com.gigapi.mesh
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.gigapi.effects.DisposableEffect
 import com.gigapi.mesh.blender.BlenderConverter
 import com.gigapi.mesh.blender.BlenderParser
-import java.io.File
 
 class ModelAssetManager(
     private val texturesPath: String,
@@ -20,8 +20,8 @@ class ModelAssetManager(
     }
 
     fun loadObj(key: Any, objFilePath: String, mltFilePath: String?) {
-        val objFile = File(objFilePath)
-        val mltFile = if(mltFilePath != null) File(mltFilePath) else null
+        val objFile = Gdx.files.internal(objFilePath)
+        val mltFile = if (mltFilePath != null) Gdx.files.internal(mltFilePath) else null
         val blenderModel = blenderParser.parseObj(objFile, mltFile)
         blenderModelRenderMap[key] = BlenderConverter.convertToRenderModel(blenderModel, texturesPath, assetManager)
     }
