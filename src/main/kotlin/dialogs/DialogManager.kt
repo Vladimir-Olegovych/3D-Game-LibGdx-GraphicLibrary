@@ -6,7 +6,6 @@ class DialogManager {
 
     fun addDialog(dialog: Dialog){
         if (dialogs.contains(dialog)) return
-        dialog.onCreate()
         dialogs.add(dialog)
     }
 

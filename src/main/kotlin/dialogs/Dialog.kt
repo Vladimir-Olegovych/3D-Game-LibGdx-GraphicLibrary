@@ -7,8 +7,8 @@ abstract class Dialog {
 
     fun isShowed(): Boolean = showed
 
-    open fun onCreate() {}
-    open fun onDestroy() {}
+    open fun onShow() {}
+    open fun onHide() {}
 
     open fun onPause() {}
     open fun onResume() {}
@@ -17,18 +17,26 @@ abstract class Dialog {
     open fun onResize(width: Int, height: Int) {}
 
     fun dismiss(){
-        if (dialogManager == null) return
-        dialogManager?.removeDialog(this)
-        onDestroy()
-        dialogManager = null
+        if (!showed || dialogManager == null) return
+        onHide()
         showed = false
     }
 
-    fun show(dialogManager: DialogManager){
-        if (this.dialogManager != null) return
+    fun show(){
+        if (showed || dialogManager == null) return
+        onShow()
+        showed = true
+    }
+
+    fun attach(dialogManager: DialogManager) {
+        this.dialogManager?.removeDialog(this)
         this.dialogManager = dialogManager
         dialogManager.addDialog(this)
-        showed = true
+    }
+
+    fun unattach() {
+        this.dialogManager?.removeDialog(this)
+        this.dialogManager = null
     }
 
 }
